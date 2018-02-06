@@ -8,16 +8,17 @@ header,footer{
     color:$fontColor;
 }
 section{
+    overflow: auto;
     background-color: $secondColor;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    height: 100vh-($headerfooterHeight*2);
+    justify-content: space-between;
+    //height: 100vh-($headerfooterHeight*2);
     & > div{
         display: flex;
         justify-content: space-around;
-        margin: 2%;
         flex-wrap: wrap;
+        margin:2%;
         & h3{
             flex-basis: 100%;
             margin: 1%;
