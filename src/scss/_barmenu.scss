@@ -1,0 +1,49 @@
+nav{
+    display: flex;
+    & ul{
+        flex-grow: 1;
+        display: flex;
+        & li{
+            flex-grow: 1;
+            padding: 1%;
+            list-style: none;
+            &:hover{
+                & a{
+                    opacity: 1;
+                    color:white;
+                }
+            }
+            & a{
+                transition: .2s;
+                font-size: 1.3em;
+                display: inline-block;
+                width: 100%;
+                color:$secondColor;
+                text-decoration: none;
+                opacity: .6;
+            }
+        }
+    }
+    & p{
+        flex-basis: 20%;
+        & input{
+            background-color: transparent;
+            border: thin solid $secondColor;
+            font-size: 1.1em;
+            color:$secondColor;
+            padding: 1%;
+        }
+        & button{
+            font-size: 1.1em;
+            padding: 1%;
+            background-color: transparent;
+            color:$secondColor;
+            border:thin solid $secondColor;
+            cursor: pointer;
+            &:hover{
+                background-color: $secondColor;
+                color: $mainColor;
+            }
+        }
+    }
+}

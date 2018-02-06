@@ -1,0 +1,45 @@
+@import '_reset.scss';
+@import '_colors.scss';
+@import '_barmenu.scss';
+$headerfooterHeight:10vh;
+header,footer{
+    height: $headerfooterHeight;
+    background-color: $mainColor;
+    color:$fontColor;
+}
+section{
+    background-color: $secondColor;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100vh-($headerfooterHeight*2);
+    & > div{
+        display: flex;
+        justify-content: space-around;
+        margin: 2%;
+        flex-wrap: wrap;
+        & h3{
+            flex-basis: 100%;
+            margin: 1%;
+        }
+    }
+    & .item{
+        border:thin solid;
+        position: relative;
+        display: flex;
+        cursor: pointer;
+        & p{
+            max-width: 200px;
+            width: 100%;
+            padding:2%;
+            position: absolute;
+            bottom: 0;
+            background-color: $mainColor;
+            color:$secondColor;
+        }
+        & img{
+            width: 200px;
+            height: 250px;
+        }
+    }
+}
