@@ -37,7 +37,7 @@ const createHTML = data =>
         $("<img>",{src:`${data.img}`})
     );
 
-const createPreloader = text=>$(`<p class="fas fa-spinner fa-pulse preloader">${text}</p>`)
+const createPreloader = text=>$(`<p class="preloader">${text} <i class="fas fa-spinner fa-pulse"></i></p>`)
 /**
  * Obtiene e inserta 5 comics de la ultima semana
  */
