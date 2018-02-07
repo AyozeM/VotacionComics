@@ -5,6 +5,10 @@ module.exports = {
     main:[
       './src/js/main.js',
       './src/scss/main.scss'
+    ],
+    comics:[
+      './src/js/comics.js',
+      './src/scss/comics.scss'
     ]
   }
 /*   entry: [
