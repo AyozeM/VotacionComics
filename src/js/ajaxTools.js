@@ -1,7 +1,8 @@
 import $ from 'jquery';
 import { marvelApi } from "./constants";
 import { paginator } from './paginator';
-import { createPaginator } from './characters';
+/* import { createPaginator } from './characters';
+import { createPaginatorComic}  from './comics'; */
 /**
  * Crea el mensaje de error
  * @param {string} text  -> texto a visualizar
@@ -32,7 +33,7 @@ return data}
  * @param {Object} queryParams -> parametros de busqueda
  * @param {jquery html elemnt} container -> contenedor de resltados
  */
-export const getComics = (queryParams = null,container,paginatorOn = false) =>{
+export const getComics = (queryParams = null,container,paginatorOn = null) =>{
     queryParams = addKey(queryParams);
     $.ajax({
         url:`${marvelApi.url}${marvelApi.methods.comics}`,
@@ -41,6 +42,9 @@ export const getComics = (queryParams = null,container,paginatorOn = false) =>{
             response.data.results.map(e=>{
                 createHTML({name:e.title,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id}).appendTo(container);
             });
+            if(paginatorOn != null){
+                paginatorOn();
+            }
         },
         beforeSend:()=>{
             container.append(
@@ -59,7 +63,7 @@ export const getComics = (queryParams = null,container,paginatorOn = false) =>{
  * @param {Object} queryParams -> lista de parametros para la api
  * @param {jquery html element} container -> contenedor de los resultados
  */
-export const getCharacters = (queryParams = null,container,paginatorOn = false) =>{
+export const getCharacters = (queryParams = null,container,paginatorOn = null) =>{
     queryParams = addKey(queryParams);
     $.ajax({
         url:`${marvelApi.url}${marvelApi.methods.characters}`,
@@ -68,8 +72,8 @@ export const getCharacters = (queryParams = null,container,paginatorOn = false) 
             response.data.results.map(e=>{
                 createHTML({name:e.name,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id}).appendTo(container);
             })
-            if(paginatorOn){
-                createPaginator();
+            if(paginatorOn != null){
+                paginatorOn();
             }
         },
         data:queryParams,

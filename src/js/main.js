@@ -1,9 +1,10 @@
 import $ from 'jquery';
-import * as ajax from './ajaxTools';
+import {getComics,getCharacters} from './ajaxTools';
 
 $(document).ready(()=>{
-    ajax.getComics({limit:5,dateDescriptor:"lastWeek"},$(".comics"));
-    ajax.getCharacters({limit:5},$(".characters"));
+    getComics({limit:5,dateDescriptor:"lastWeek"},$(".comics"));
+    getCharacters({limit:5},$(".characters"));
+
     $("section").find("div").on("click","div",e=>{
         alert($(e.currentTarget).data("id"));
     });

@@ -2,12 +2,12 @@ import $ from 'jquery';
 import {getCharacters} from './ajaxTools';
 import { paginator } from './paginator';
 $(document).ready(()=>{
-    getCharacters({limit:100},$("section"),true);
+    getCharacters({limit:100},$("section"),createPaginator);
 });
 let book;
 let offset = 0;
 let limit = 100;
-export const createPaginator = () =>{    
+const createPaginator = () =>{    
     book = new paginator($("section").children(),10,"section");
     $("prev").off("click");
     $("next").off("click");
@@ -17,7 +17,7 @@ export const createPaginator = () =>{
         if(aux < 0 && offset > 0){
             $("section").children().remove();
             offset -= limit;
-            getCharacters({offset:offset,limit:100},$("section"),true);
+            getCharacters({offset:offset,limit:100},$("section"),createPaginator);
         }else{
             book.changePage(aux);
         }
@@ -27,7 +27,7 @@ export const createPaginator = () =>{
         if(aux > book.pages-1){
             $("section").children().remove();
             offset+=limit;
-            getCharacters({offset:offset,limit:100},$("section"),true);
+            getCharacters({offset:offset,limit:100},$("section"),createPaginator);
         }else{
             book.changePage(aux);
         }
