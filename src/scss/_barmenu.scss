@@ -1,3 +1,4 @@
+@import '_colors.scss';
 nav{
     display: flex;
     & ul{
@@ -25,7 +26,7 @@ nav{
         }
     }
     & p{
-        flex-basis: 20%;
+        flex-basis: 25%;
         & input{
             background-color: transparent;
             border: thin solid $secondColor;

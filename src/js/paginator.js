@@ -57,7 +57,7 @@ export class paginator{
                     this.changePage(aux)
                 })
             ).append(
-                $(`<last data-page="${this.index.length-1}">>><last>`).click(e=>{
+                $(`<last data-page="${this.index.length-1}">>></last>`).click(e=>{
                     this.changePage($(e.currentTarget).data("page"))
                 })
             )

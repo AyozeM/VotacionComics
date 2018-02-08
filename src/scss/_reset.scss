@@ -1,3 +1,4 @@
+@import '_colors.scss';
 *{
     margin:0;
     padding: 0;
@@ -8,4 +9,10 @@
 html,body{
     width: 100%;
     height: 100%;
+}
+$headerfooterHeight:10vh;
+header,footer{
+    height: $headerfooterHeight;
+    background-color: $mainColor;
+    color:$fontColor;
 }

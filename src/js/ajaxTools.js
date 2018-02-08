@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { marvelApi } from "./constants";
+import { paginator } from './paginator';
 /**
  * Crea el mensaje de error
  * @param {string} text  -> texto a visualizar
@@ -30,7 +31,7 @@ return data}
  * @param {Object} queryParams -> parametros de busqueda
  * @param {jquery html elemnt} container -> contenedor de resltados
  */
-export const getComics = (queryParams = null,container) =>{
+export const getComics = (queryParams = null,container,paginatorOn = false) =>{
     queryParams = addKey(queryParams);
     $.ajax({
         url:`${marvelApi.url}${marvelApi.methods.comics}`,
@@ -39,6 +40,9 @@ export const getComics = (queryParams = null,container) =>{
             response.data.results.map(e=>{
                 createHTML({name:e.title,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id}).appendTo(container);
             });
+            if(paginatorOn){
+                let aux = new paginator(10,container);
+            }
         },
         beforeSend:()=>{
             container.append(
@@ -57,7 +61,7 @@ export const getComics = (queryParams = null,container) =>{
  * @param {Object} queryParams -> lista de parametros para la api
  * @param {jquery html element} container -> contenedor de los resultados
  */
-export const getCharacters = (queryParams = null,container) =>{
+export const getCharacters = (queryParams = null,container,paginatorOn = false) =>{
     queryParams = addKey(queryParams);
     $.ajax({
         url:`${marvelApi.url}${marvelApi.methods.characters}`,
@@ -66,6 +70,9 @@ export const getCharacters = (queryParams = null,container) =>{
             response.data.results.map(e=>{
                 createHTML({name:e.name,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id}).appendTo(container);
             })
+            if(paginatorOn){
+                let aux = new paginator(10,container);
+            }
         },
         data:queryParams,
         error:()=>{
