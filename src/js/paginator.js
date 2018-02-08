@@ -4,13 +4,13 @@ import $ from 'jquery';
  * @class
  */
 export class paginator{
-    constructor(itemsOnPage,container){
-        this.items = $(container).children().length;
+    constructor(items,itemsOnPage,container){
+        this.items = items;
         this.itemsOnPage = itemsOnPage;
-        this.pages = this.items / itemsOnPage;
+        this.pages = this.items.length / itemsOnPage;
         this.actualPage = 0;
         this.container = container;
-        this.index = this.createMatrix($(container).children());
+        this.index = this.createMatrix(items);
         this.prepare();
         this.drawPage();
     }
@@ -84,11 +84,12 @@ export class paginator{
      */
     changePage(newPage){
         newPage = parseInt(newPage);
-        this.clean();
+        
         if(newPage > -1 && newPage < this.index.length){
             this.actualPage = newPage;
+            this.clean();
+            this.drawPage(); 
         }
-        this.drawPage();
     }
     
 }

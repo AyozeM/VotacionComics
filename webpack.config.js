@@ -9,6 +9,10 @@ module.exports = {
     comics:[
       './src/js/comics.js',
       './src/scss/comics.scss'
+    ],
+    characters:[
+      './src/js/characters.js',
+      './src/scss/characters.scss'
     ]
   }
 /*   entry: [

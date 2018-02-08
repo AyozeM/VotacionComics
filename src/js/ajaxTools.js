@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { marvelApi } from "./constants";
 import { paginator } from './paginator';
+import { createPaginator } from './characters';
 /**
  * Crea el mensaje de error
  * @param {string} text  -> texto a visualizar
@@ -40,9 +41,6 @@ export const getComics = (queryParams = null,container,paginatorOn = false) =>{
             response.data.results.map(e=>{
                 createHTML({name:e.title,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id}).appendTo(container);
             });
-            if(paginatorOn){
-                let aux = new paginator(10,container);
-            }
         },
         beforeSend:()=>{
             container.append(
@@ -71,7 +69,7 @@ export const getCharacters = (queryParams = null,container,paginatorOn = false) 
                 createHTML({name:e.name,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id}).appendTo(container);
             })
             if(paginatorOn){
-                let aux = new paginator(10,container);
+                createPaginator();
             }
         },
         data:queryParams,
