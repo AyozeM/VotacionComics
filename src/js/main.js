@@ -6,10 +6,17 @@ $(document).ready(()=>{
     getCharacters({limit:5},$(".characters"));
 
     $("section").find("div").on("click","div",e=>{
-        alert($(e.currentTarget).data("id"));
+        selectItem(e.currentTarget);
+        window.location  += "html/details.html"; 
     });
     $("#search").click(e=>{
         alert($(e.currentTarget).siblings("inupt").val());
     });
 });
 
+export const selectItem = tag =>{
+    localStorage.setItem("selectedItem",JSON.stringify({
+        id:$(tag).data("id"),
+        type:$(tag).data("type")
+    }));
+}

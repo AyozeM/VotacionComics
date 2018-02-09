@@ -1,0 +1,24 @@
+@import '_reset.scss';
+@import '_colors.scss';
+@import '_barmenu.scss';
+
+article{
+    & img{
+        width: 25vw;
+        height: 75vh;
+        margin : 2%;
+    }
+    & div{
+        display: flex;
+        flex-wrap: wrap;
+        & h3{
+            flex-basis: 50%;
+            height: 1em;
+            margin-bottom: 1.5%;
+        }
+        & > p{
+            flex-basis: 75% - 9%;
+            margin:2%;
+        }
+    }
+}

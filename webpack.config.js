@@ -13,6 +13,10 @@ module.exports = {
     characters:[
       './src/js/characters.js',
       './src/scss/characters.scss'
+    ],
+    details:[
+      './src/js/details.js',
+      './src/scss/details.scss'
     ]
   }
 /*   entry: [

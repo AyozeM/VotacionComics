@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "dist/js/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11289,22 +11289,105 @@ const selectItem = tag =>{
 
 
 /***/ }),
-/* 8 */,
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-__webpack_require__(7);
-module.exports = __webpack_require__(10);
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paginator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ajaxTools__ = __webpack_require__(1);
+
+
+
+let book;
+let offset = 0;
+let limit = 100;
+const createPaginator = method =>{    
+    book = new __WEBPACK_IMPORTED_MODULE_1__paginator__["a" /* paginator */](__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section").children(),10,"section");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("prev").off("click");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("next").off("click");
+
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("prev").click(e=>{
+        let aux = -- book.actualPage;
+        if(aux < 0 && offset > 0){
+            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("section").children().remove();
+            offset -= limit;
+            Object(__WEBPACK_IMPORTED_MODULE_2__ajaxTools__["a" /* getCharacters */])({offset:offset,limit:100},__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section"),createPaginator);
+        }else{
+            book.changePage(aux);
+        }
+    });
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("next").click(e=>{
+        let aux = ++ book.actualPage ;
+        if(aux > book.pages-1){
+            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("section").children().remove();
+            offset+=limit;
+            switch(method){
+                case 'comics':
+                    Object(__WEBPACK_IMPORTED_MODULE_2__ajaxTools__["b" /* getComics */])({offset:offset,limit:100},__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section"),createPaginator);
+                    break;
+                case 'characters':
+                    Object(__WEBPACK_IMPORTED_MODULE_2__ajaxTools__["a" /* getCharacters */])({offset:offset,limit:100},__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section"),createPaginator);
+                    break;
+            }
+        }else{
+            book.changePage(aux);
+        }
+    });
+    return createPaginator;
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = createPaginator;
 
 
 /***/ }),
-/* 10 */
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(17);
+module.exports = __webpack_require__(18);
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ajaxTools__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paginator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__personalPaginator__ = __webpack_require__(8);
+
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).ready(()=>{
+    Object(__WEBPACK_IMPORTED_MODULE_1__ajaxTools__["a" /* getCharacters */])({limit:100},__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section"),__WEBPACK_IMPORTED_MODULE_4__personalPaginator__["a" /* createPaginator */]);
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("section").on("click",'.item',e=>{
+        Object(__WEBPACK_IMPORTED_MODULE_3__main__["selectItem"])(e.currentTarget);
+        window.location = window.location.href.replace("characters","details");
+    });
+});
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(11);
+var content = __webpack_require__(19);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -11318,8 +11401,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./main.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./main.scss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./characters.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./characters.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -11329,7 +11412,7 @@ if(false) {
 }
 
 /***/ }),
-/* 11 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -11337,7 +11420,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  font-family: 'Indie Flower', cursive; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nheader, footer {\n  height: 10vh;\n  background-color: #242121;\n  color: whitesmoke; }\n\nnav {\n  display: flex; }\n  nav ul {\n    flex-grow: 1;\n    display: flex; }\n    nav ul li {\n      flex-grow: 1;\n      padding: 1%;\n      list-style: none; }\n      nav ul li:hover a {\n        opacity: 1;\n        color: white; }\n      nav ul li a {\n        transition: .2s;\n        font-size: 1.7em;\n        display: inline-block;\n        width: 100%;\n        color: lightgray;\n        text-decoration: none;\n        opacity: .6; }\n  nav p {\n    flex-basis: 25%; }\n    nav p input {\n      background-color: transparent;\n      border: thin solid lightgray;\n      font-size: 1.1em;\n      color: lightgray;\n      padding: 1%; }\n    nav p button {\n      font-size: 1.1em;\n      padding: 1%;\n      background-color: transparent;\n      color: lightgray;\n      border: thin solid lightgray;\n      cursor: pointer; }\n      nav p button:hover {\n        background-color: lightgray;\n        color: #242121; }\n\nsection {\n  overflow: auto;\n  background-color: lightgray;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between; }\n  section > div {\n    display: flex;\n    justify-content: space-around;\n    flex-wrap: wrap;\n    margin: 2%; }\n    section > div h3 {\n      flex-basis: 100%;\n      margin: 1%;\n      font-size: 1.3em; }\n  section .item {\n    border: thin solid;\n    position: relative;\n    display: flex;\n    cursor: pointer; }\n    section .item p {\n      max-width: 200px;\n      width: 100%;\n      padding: 2%;\n      position: absolute;\n      bottom: 0;\n      background-color: #242121;\n      color: lightgray; }\n    section .item img {\n      width: 200px;\n      height: 250px; }\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  font-family: 'Indie Flower', cursive; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nheader, footer {\n  height: 10vh;\n  background-color: #242121;\n  color: whitesmoke; }\n\ncontent {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: space-around; }\n  content > div {\n    margin: 2%; }\n\ncontrols {\n  display: flex;\n  justify-content: center; }\n  controls first, controls prev, controls next, controls last {\n    padding: 2%;\n    background-color: #242121;\n    color: lightgray;\n    border: thin solid;\n    cursor: pointer; }\n\n.item {\n  border: thin solid;\n  position: relative;\n  display: flex;\n  cursor: pointer; }\n  .item p {\n    max-width: 200px;\n    width: 100%;\n    padding: 2%;\n    position: absolute;\n    bottom: 0;\n    background-color: #242121;\n    color: lightgray; }\n  .item img {\n    width: 200px;\n    height: 250px; }\n\nnav {\n  display: flex; }\n  nav ul {\n    flex-grow: 1;\n    display: flex; }\n    nav ul li {\n      flex-grow: 1;\n      padding: 1%;\n      list-style: none; }\n      nav ul li:hover a {\n        opacity: 1;\n        color: white; }\n      nav ul li a {\n        transition: .2s;\n        font-size: 1.7em;\n        display: inline-block;\n        width: 100%;\n        color: lightgray;\n        text-decoration: none;\n        opacity: .6; }\n  nav p {\n    flex-basis: 25%; }\n    nav p input {\n      background-color: transparent;\n      border: thin solid lightgray;\n      font-size: 1.1em;\n      color: lightgray;\n      padding: 1%; }\n    nav p button {\n      font-size: 1.1em;\n      padding: 1%;\n      background-color: transparent;\n      color: lightgray;\n      border: thin solid lightgray;\n      cursor: pointer; }\n      nav p button:hover {\n        background-color: lightgray;\n        color: #242121; }\n", ""]);
 
 // exports
 

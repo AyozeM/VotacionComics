@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "dist/js/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -10441,9 +10441,13 @@ return jQuery;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paginator__ = __webpack_require__(2);
 
 
+
+/* import { createPaginator } from './characters';
+import { createPaginatorComic}  from './comics'; */
 /**
  * Crea el mensaje de error
  * @param {string} text  -> texto a visualizar
@@ -10453,7 +10457,7 @@ const createError = text =>__WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<p>${
  * Crea la estructura html con la que se representaran los datos
  */
 const createHTML = data =>
-    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("<div>",{class:'item','data-id':data.id}).append(
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("<div>",{class:'item','data-id':data.id,'data-type':data.type}).append(
         __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<p>${data.name}</p>`)
     ).append(
         __WEBPACK_IMPORTED_MODULE_0_jquery___default()("<img>",{src:`${data.img}`})
@@ -10474,15 +10478,18 @@ return data}
  * @param {Object} queryParams -> parametros de busqueda
  * @param {jquery html elemnt} container -> contenedor de resltados
  */
-const getComics = (queryParams = null,container) =>{
+const getComics = (queryParams = null,container,paginatorOn = null) =>{
     queryParams = addKey(queryParams);
     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.ajax({
         url:`${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].url}${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].methods.comics}`,
         success:response=>{
             container.find(".preloader").remove();
             response.data.results.map(e=>{
-                createHTML({name:e.title,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id}).appendTo(container);
+                createHTML({name:e.title,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id,type:"comic"}).appendTo(container);
             });
+            if(paginatorOn != null){
+                paginatorOn('comics');
+            }
         },
         beforeSend:()=>{
             container.append(
@@ -10503,15 +10510,18 @@ const getComics = (queryParams = null,container) =>{
  * @param {Object} queryParams -> lista de parametros para la api
  * @param {jquery html element} container -> contenedor de los resultados
  */
-const getCharacters = (queryParams = null,container) =>{
+const getCharacters = (queryParams = null,container,paginatorOn = null) =>{
     queryParams = addKey(queryParams);
     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.ajax({
         url:`${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].url}${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].methods.characters}`,
         success:response=>{
             container.find(".preloader").remove();
             response.data.results.map(e=>{
-                createHTML({name:e.name,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id}).appendTo(container);
+                createHTML({name:e.name,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id,type:"character"}).appendTo(container);
             })
+            if(paginatorOn != null){
+                paginatorOn('characters');
+            }
         },
         data:queryParams,
         error:()=>{
@@ -10525,9 +10535,162 @@ const getCharacters = (queryParams = null,container) =>{
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = getCharacters;
 
+const getSingleComic = (id,container,action) =>{
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.ajax({
+        url:`${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].url}${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].methods.comics}/${id}`,
+        data:{apikey:__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].key},
+        success:response=>{
+            container.find(".preloader").remove();
+            const aux = response.data.results[0];
+            action({
+                title : aux.title,
+                description : aux.description,
+                img : `${aux.thumbnail.path}.${aux.thumbnail.extension}`
+            })
+        },
+        error:(xhr,x,y)=>{
+            container.find(".preloader").remove();
+            createError("No se pudieron cargar los detalles de este comic").appendTo(container)
+        },
+        beforeSend:()=>{
+            createPreloader("Cargando detalles del comic...").appendTo(container);
+        }
+    });
+}
+/* harmony export (immutable) */ __webpack_exports__["d"] = getSingleComic;
+
+const getSingleCharacter = (id,container,action) =>{
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.ajax({
+        url:`${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].url}${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].methods.characters}/${id}`,
+        data:{apikey:__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].key},
+        success:response=>{
+            container.find(".preloader").remove();
+            const aux = response.data.results[0];
+            action({
+                title : aux.name,
+                description : aux.description,
+                img : `${aux.thumbnail.path}.${aux.thumbnail.extension}`
+            })
+        },
+        error:(xhr,x,y)=>{
+            container.find(".preloader").remove();
+            createError("No se pudieron cargar los detalles de este comic").appendTo(container)
+        },
+        beforeSend:()=>{
+            createPreloader("Cargando detalles del comic...").appendTo(container);
+        }
+    });
+}
+/* harmony export (immutable) */ __webpack_exports__["c"] = getSingleCharacter;
+
 
 /***/ }),
 /* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+
+/**
+ * Pagina el contenido de un elemento
+ * @class
+ */
+class paginator{
+    constructor(items,itemsOnPage,container){
+        this.items = items;
+        this.itemsOnPage = itemsOnPage;
+        this.pages = this.items.length / itemsOnPage;
+        this.actualPage = 0;
+        this.container = container;
+        this.index = this.createMatrix(items);
+        this.prepare();
+        this.drawPage();
+    }
+    /**
+     * Crea una representacion de la paginacion visual mediante una matriz
+     * @param {htmlCollection} elements 
+     */
+    createMatrix(elements){
+        let schema = [];
+        let start = 0;
+        let end = this.itemsOnPage;
+        for (let i = 0; i < this.pages; i++) {
+            if(end > elements.length){
+                schema.push(elements.slice(start-elements.length));
+            }else{
+                schema.push(elements.slice(start,end));
+            }
+            start += this.itemsOnPage;
+            end += this.itemsOnPage;
+            
+        }
+        return schema;
+    }
+    /**
+     * Prepara el contenedor para el paginado
+     */
+    prepare(){
+        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this.container).children().remove();
+        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this.container).append(
+            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("<content></content>")
+        ).append(
+            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("<controls></controls>").append(
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<first data-page="0"><<</first>`).click(e=>{
+                    this.changePage(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).data("page"))
+                })
+            ).append(
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<prev data-page="1"><</prev>`).click(e=>{
+                    let aux = this.actualPage - parseInt(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).data("page"));
+                    this.changePage(aux)
+                })
+            ).append(
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<next data-page="1">></next>`).click(e=>{
+                    let aux = this.actualPage + parseInt(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).data("page"));
+                    this.changePage(aux)
+                })
+            ).append(
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<last data-page="${this.index.length-1}">>></last>`).click(e=>{
+                    this.changePage(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).data("page"))
+                })
+            )
+        );
+    }
+    /**
+     * Dibuja la pagina actual
+     */
+    drawPage(){
+        for (let i = 0; i < this.index[this.actualPage].length; i++) {
+            const element = this.index[this.actualPage][i];
+            __WEBPACK_IMPORTED_MODULE_0_jquery___default()(element).appendTo("content");
+        }
+    }
+    /**
+     * Limpia el contenedor de elementos
+     */
+    clean(){
+        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this.container).find("content").children().remove();
+    }
+    /**
+     * Cambia de pagina, comprobando que no se sale fuera de los limites
+     * @param {Int} newPage -> posible nueva pagina
+     */
+    changePage(newPage){
+        newPage = parseInt(newPage);
+        
+        if(newPage > -1 && newPage < this.index.length){
+            this.actualPage = newPage;
+            this.clean();
+            this.drawPage(); 
+        }
+    }
+    
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = paginator;
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10543,7 +10706,7 @@ const marvelApi = {
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 /*
@@ -10625,7 +10788,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -10681,7 +10844,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(5);
+var	fixUrls = __webpack_require__(6);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -10997,7 +11160,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 
@@ -11092,19 +11255,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(11);
-module.exports = __webpack_require__(13);
-
-
-/***/ }),
-/* 11 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11112,129 +11263,127 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ajaxTools__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paginator__ = __webpack_require__(12);
 
 
 
 __WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).ready(()=>{
-    //ajax.getComics({limit:100},$("section"));
-    let x = new __WEBPACK_IMPORTED_MODULE_2__paginator__["a" /* paginator */](3,"section");
-    let suso = 0;
+    Object(__WEBPACK_IMPORTED_MODULE_1__ajaxTools__["b" /* getComics */])({limit:5,dateDescriptor:"lastWeek"},__WEBPACK_IMPORTED_MODULE_0_jquery___default()(".comics"));
+    Object(__WEBPACK_IMPORTED_MODULE_1__ajaxTools__["a" /* getCharacters */])({limit:5},__WEBPACK_IMPORTED_MODULE_0_jquery___default()(".characters"));
+
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("section").find("div").on("click","div",e=>{
+        selectItem(e.currentTarget);
+        window.location  += "html/details.html"; 
+    });
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("#search").click(e=>{
+        alert(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).siblings("inupt").val());
+    });
 });
+
+const selectItem = tag =>{
+    localStorage.setItem("selectedItem",JSON.stringify({
+        id:__WEBPACK_IMPORTED_MODULE_0_jquery___default()(tag).data("id"),
+        type:__WEBPACK_IMPORTED_MODULE_0_jquery___default()(tag).data("type")
+    }));
+}
+/* harmony export (immutable) */ __webpack_exports__["selectItem"] = selectItem;
 
 
 /***/ }),
-/* 12 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__paginator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ajaxTools__ = __webpack_require__(1);
 
-/**
- * Pagina el contenido de un elemento
- * @class
- */
-class paginator{
-    constructor(itemsOnPage,container){
-        this.items = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(container).children().length;
-        this.itemsOnPage = itemsOnPage;
-        this.pages = this.items / itemsOnPage;
-        this.actualPage = 0;
-        this.container = container;
-        this.index = this.createMatrix(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(container).children());
-        this.prepare();
-        this.drawPage();
-    }
-    /**
-     * Crea una representacion de la paginacion visual mediante una matriz
-     * @param {htmlCollection} elements 
-     */
-    createMatrix(elements){
-        let schema = [];
-        let start = 0;
-        let end = this.itemsOnPage;
-        for (let i = 0; i < this.pages; i++) {
-            if(end > elements.length){
-                schema.push(elements.slice(start-elements.length));
-            }else{
-                schema.push(elements.slice(start,end));
+
+
+let book;
+let offset = 0;
+let limit = 100;
+const createPaginator = method =>{    
+    book = new __WEBPACK_IMPORTED_MODULE_1__paginator__["a" /* paginator */](__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section").children(),10,"section");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("prev").off("click");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("next").off("click");
+
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("prev").click(e=>{
+        let aux = -- book.actualPage;
+        if(aux < 0 && offset > 0){
+            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("section").children().remove();
+            offset -= limit;
+            Object(__WEBPACK_IMPORTED_MODULE_2__ajaxTools__["a" /* getCharacters */])({offset:offset,limit:100},__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section"),createPaginator);
+        }else{
+            book.changePage(aux);
+        }
+    });
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("next").click(e=>{
+        let aux = ++ book.actualPage ;
+        if(aux > book.pages-1){
+            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("section").children().remove();
+            offset+=limit;
+            switch(method){
+                case 'comics':
+                    Object(__WEBPACK_IMPORTED_MODULE_2__ajaxTools__["b" /* getComics */])({offset:offset,limit:100},__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section"),createPaginator);
+                    break;
+                case 'characters':
+                    Object(__WEBPACK_IMPORTED_MODULE_2__ajaxTools__["a" /* getCharacters */])({offset:offset,limit:100},__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section"),createPaginator);
+                    break;
             }
-            start += this.itemsOnPage;
-            end += this.itemsOnPage;
-            
+        }else{
+            book.changePage(aux);
         }
-        return schema;
-    }
-    /**
-     * Prepara el contenedor para el paginado
-     */
-    prepare(){
-        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this.container).children().remove();
-        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this.container).append(
-            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("<content></content>")
-        ).append(
-            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("<controls></controls>").append(
-                __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<first data-page="0"><<</first>`).click(e=>{
-                    this.changePage(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).data("page"))
-                })
-            ).append(
-                __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<prev data-page="1"><</prev>`).click(e=>{
-                    let aux = this.actualPage - parseInt(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).data("page"));
-                    this.changePage(aux)
-                })
-            ).append(
-                __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<next data-page="1">></next>`).click(e=>{
-                    let aux = this.actualPage + parseInt(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).data("page"));
-                    this.changePage(aux)
-                })
-            ).append(
-                __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<last data-page="${this.index.length-1}">>><last>`).click(e=>{
-                    this.changePage(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).data("page"))
-                })
-            )
-        );
-    }
-    /**
-     * Dibuja la pagina actual
-     */
-    drawPage(){
-        for (let i = 0; i < this.index[this.actualPage].length; i++) {
-            const element = this.index[this.actualPage][i];
-            __WEBPACK_IMPORTED_MODULE_0_jquery___default()(element).appendTo("content");
-        }
-    }
-    /**
-     * Limpia el contenedor de elementos
-     */
-    clean(){
-        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this.container).find("content").children().remove();
-    }
-    /**
-     * Cambia de pagina, comprobando que no se sale fuera de los limites
-     * @param {Int} newPage -> posible nueva pagina
-     */
-    changePage(newPage){
-        newPage = parseInt(newPage);
-        this.clean();
-        if(newPage > -1 && newPage < this.index.length){
-            this.actualPage = newPage;
-        }
-        this.drawPage();
-    }
-    
+    });
+    return createPaginator;
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = paginator;
+/* harmony export (immutable) */ __webpack_exports__["a"] = createPaginator;
+
+
+/***/ }),
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(13);
+module.exports = __webpack_require__(14);
 
 
 /***/ }),
 /* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ajaxTools__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__paginator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__personalPaginator__ = __webpack_require__(8);
+
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).ready(()=>{
+    Object(__WEBPACK_IMPORTED_MODULE_1__ajaxTools__["b" /* getComics */])({limit:100},__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section"),__WEBPACK_IMPORTED_MODULE_4__personalPaginator__["a" /* createPaginator */]);
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("section").on("click",".item",e=>{
+        Object(__WEBPACK_IMPORTED_MODULE_3__main__["selectItem"])(e.currentTarget);
+        window.location = window.location.href.replace("comics","details");
+    })
+});
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(14);
+var content = __webpack_require__(15);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -11242,7 +11391,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
+var update = __webpack_require__(5)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -11259,15 +11408,15 @@ if(false) {
 }
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(4)(false);
 // imports
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  font-family: 'Indie Flower', cursive; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  font-family: 'Indie Flower', cursive; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nheader, footer {\n  height: 10vh;\n  background-color: #242121;\n  color: whitesmoke; }\n\ncontent {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: space-around; }\n  content > div {\n    margin: 2%; }\n\ncontrols {\n  display: flex;\n  justify-content: center; }\n  controls first, controls prev, controls next, controls last {\n    padding: 2%;\n    background-color: #242121;\n    color: lightgray;\n    border: thin solid;\n    cursor: pointer; }\n\n.item {\n  border: thin solid;\n  position: relative;\n  display: flex;\n  cursor: pointer; }\n  .item p {\n    max-width: 200px;\n    width: 100%;\n    padding: 2%;\n    position: absolute;\n    bottom: 0;\n    background-color: #242121;\n    color: lightgray; }\n  .item img {\n    width: 200px;\n    height: 250px; }\n\nnav {\n  display: flex; }\n  nav ul {\n    flex-grow: 1;\n    display: flex; }\n    nav ul li {\n      flex-grow: 1;\n      padding: 1%;\n      list-style: none; }\n      nav ul li:hover a {\n        opacity: 1;\n        color: white; }\n      nav ul li a {\n        transition: .2s;\n        font-size: 1.7em;\n        display: inline-block;\n        width: 100%;\n        color: lightgray;\n        text-decoration: none;\n        opacity: .6; }\n  nav p {\n    flex-basis: 25%; }\n    nav p input {\n      background-color: transparent;\n      border: thin solid lightgray;\n      font-size: 1.1em;\n      color: lightgray;\n      padding: 1%; }\n    nav p button {\n      font-size: 1.1em;\n      padding: 1%;\n      background-color: transparent;\n      color: lightgray;\n      border: thin solid lightgray;\n      cursor: pointer; }\n      nav p button:hover {\n        background-color: lightgray;\n        color: #242121; }\n", ""]);
 
 // exports
 

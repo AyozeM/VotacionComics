@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "dist/js/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11255,7 +11255,28 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 7 */
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(21);
+module.exports = __webpack_require__(22);
+
+
+/***/ }),
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11265,46 +11286,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ajaxTools__ = __webpack_require__(1);
 
 
-
 __WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).ready(()=>{
-    Object(__WEBPACK_IMPORTED_MODULE_1__ajaxTools__["b" /* getComics */])({limit:5,dateDescriptor:"lastWeek"},__WEBPACK_IMPORTED_MODULE_0_jquery___default()(".comics"));
-    Object(__WEBPACK_IMPORTED_MODULE_1__ajaxTools__["a" /* getCharacters */])({limit:5},__WEBPACK_IMPORTED_MODULE_0_jquery___default()(".characters"));
-
-    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("section").find("div").on("click","div",e=>{
-        selectItem(e.currentTarget);
-        window.location  += "html/details.html"; 
-    });
-    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("#search").click(e=>{
-        alert(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).siblings("inupt").val());
-    });
+    let actual = JSON.parse(localStorage.getItem("selectedItem"));
+    switch(actual.type){
+        case "comic":
+            Object(__WEBPACK_IMPORTED_MODULE_1__ajaxTools__["d" /* getSingleComic */])(actual.id,__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section"),completeDetails);
+            break;
+        case "character":
+        Object(__WEBPACK_IMPORTED_MODULE_1__ajaxTools__["c" /* getSingleCharacter */])(actual.id,__WEBPACK_IMPORTED_MODULE_0_jquery___default()("section"),completeDetails);
+            break;
+    }
 });
 
-const selectItem = tag =>{
-    localStorage.setItem("selectedItem",JSON.stringify({
-        id:__WEBPACK_IMPORTED_MODULE_0_jquery___default()(tag).data("id"),
-        type:__WEBPACK_IMPORTED_MODULE_0_jquery___default()(tag).data("type")
-    }));
+const completeDetails = data =>{
+    
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("article").prepend(
+        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<h1>${data.title}</h1>`)
+    ).find("img").attr("src",data.img).attr("alt",`portada del comic ${data.title}` );
+
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("article").find("div").append(
+        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(`<p>${data.description}</p>`).prepend(
+            __WEBPACK_IMPORTED_MODULE_0_jquery___default()("<h3>Decripcion</h3>")
+        )
+    )
 }
-/* harmony export (immutable) */ __webpack_exports__["selectItem"] = selectItem;
-
 
 /***/ }),
-/* 8 */,
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(7);
-module.exports = __webpack_require__(10);
-
-
-/***/ }),
-/* 10 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(11);
+var content = __webpack_require__(23);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -11318,8 +11332,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./main.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./main.scss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./details.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./details.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -11329,7 +11343,7 @@ if(false) {
 }
 
 /***/ }),
-/* 11 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -11337,7 +11351,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  font-family: 'Indie Flower', cursive; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nheader, footer {\n  height: 10vh;\n  background-color: #242121;\n  color: whitesmoke; }\n\nnav {\n  display: flex; }\n  nav ul {\n    flex-grow: 1;\n    display: flex; }\n    nav ul li {\n      flex-grow: 1;\n      padding: 1%;\n      list-style: none; }\n      nav ul li:hover a {\n        opacity: 1;\n        color: white; }\n      nav ul li a {\n        transition: .2s;\n        font-size: 1.7em;\n        display: inline-block;\n        width: 100%;\n        color: lightgray;\n        text-decoration: none;\n        opacity: .6; }\n  nav p {\n    flex-basis: 25%; }\n    nav p input {\n      background-color: transparent;\n      border: thin solid lightgray;\n      font-size: 1.1em;\n      color: lightgray;\n      padding: 1%; }\n    nav p button {\n      font-size: 1.1em;\n      padding: 1%;\n      background-color: transparent;\n      color: lightgray;\n      border: thin solid lightgray;\n      cursor: pointer; }\n      nav p button:hover {\n        background-color: lightgray;\n        color: #242121; }\n\nsection {\n  overflow: auto;\n  background-color: lightgray;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between; }\n  section > div {\n    display: flex;\n    justify-content: space-around;\n    flex-wrap: wrap;\n    margin: 2%; }\n    section > div h3 {\n      flex-basis: 100%;\n      margin: 1%;\n      font-size: 1.3em; }\n  section .item {\n    border: thin solid;\n    position: relative;\n    display: flex;\n    cursor: pointer; }\n    section .item p {\n      max-width: 200px;\n      width: 100%;\n      padding: 2%;\n      position: absolute;\n      bottom: 0;\n      background-color: #242121;\n      color: lightgray; }\n    section .item img {\n      width: 200px;\n      height: 250px; }\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  font-family: 'Indie Flower', cursive; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nheader, footer {\n  height: 10vh;\n  background-color: #242121;\n  color: whitesmoke; }\n\nnav {\n  display: flex; }\n  nav ul {\n    flex-grow: 1;\n    display: flex; }\n    nav ul li {\n      flex-grow: 1;\n      padding: 1%;\n      list-style: none; }\n      nav ul li:hover a {\n        opacity: 1;\n        color: white; }\n      nav ul li a {\n        transition: .2s;\n        font-size: 1.7em;\n        display: inline-block;\n        width: 100%;\n        color: lightgray;\n        text-decoration: none;\n        opacity: .6; }\n  nav p {\n    flex-basis: 25%; }\n    nav p input {\n      background-color: transparent;\n      border: thin solid lightgray;\n      font-size: 1.1em;\n      color: lightgray;\n      padding: 1%; }\n    nav p button {\n      font-size: 1.1em;\n      padding: 1%;\n      background-color: transparent;\n      color: lightgray;\n      border: thin solid lightgray;\n      cursor: pointer; }\n      nav p button:hover {\n        background-color: lightgray;\n        color: #242121; }\n\narticle img {\n  width: 25vw;\n  height: 75vh;\n  margin: 2%; }\n\narticle div {\n  display: flex;\n  flex-wrap: wrap; }\n  article div h3 {\n    flex-basis: 50%;\n    height: 1em;\n    margin-bottom: 1.5%; }\n  article div > p {\n    flex-basis: 66%;\n    margin: 2%; }\n", ""]);
 
 // exports
 

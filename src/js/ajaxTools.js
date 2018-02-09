@@ -12,7 +12,7 @@ const createError = text =>$(`<p>${text} <i class="fas fa-exclamation-triangle">
  * Crea la estructura html con la que se representaran los datos
  */
 const createHTML = data =>
-    $("<div>",{class:'item','data-id':data.id}).append(
+    $("<div>",{class:'item','data-id':data.id,'data-type':data.type}).append(
         $(`<p>${data.name}</p>`)
     ).append(
         $("<img>",{src:`${data.img}`})
@@ -40,10 +40,10 @@ export const getComics = (queryParams = null,container,paginatorOn = null) =>{
         success:response=>{
             container.find(".preloader").remove();
             response.data.results.map(e=>{
-                createHTML({name:e.title,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id}).appendTo(container);
+                createHTML({name:e.title,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id,type:"comic"}).appendTo(container);
             });
             if(paginatorOn != null){
-                paginatorOn();
+                paginatorOn('comics');
             }
         },
         beforeSend:()=>{
@@ -70,10 +70,10 @@ export const getCharacters = (queryParams = null,container,paginatorOn = null) =
         success:response=>{
             container.find(".preloader").remove();
             response.data.results.map(e=>{
-                createHTML({name:e.name,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id}).appendTo(container);
+                createHTML({name:e.name,img:`${e.thumbnail.path}.${e.thumbnail.extension}`,id:e.id,type:"character"}).appendTo(container);
             })
             if(paginatorOn != null){
-                paginatorOn();
+                paginatorOn('characters');
             }
         },
         data:queryParams,
@@ -86,3 +86,47 @@ export const getCharacters = (queryParams = null,container,paginatorOn = null) =
         }
     });
 };
+export const getSingleComic = (id,container,action) =>{
+    $.ajax({
+        url:`${marvelApi.url}${marvelApi.methods.comics}/${id}`,
+        data:{apikey:marvelApi.key},
+        success:response=>{
+            container.find(".preloader").remove();
+            const aux = response.data.results[0];
+            action({
+                title : aux.title,
+                description : aux.description,
+                img : `${aux.thumbnail.path}.${aux.thumbnail.extension}`
+            })
+        },
+        error:(xhr,x,y)=>{
+            container.find(".preloader").remove();
+            createError("No se pudieron cargar los detalles de este comic").appendTo(container)
+        },
+        beforeSend:()=>{
+            createPreloader("Cargando detalles del comic...").appendTo(container);
+        }
+    });
+}
+export const getSingleCharacter = (id,container,action) =>{
+    $.ajax({
+        url:`${marvelApi.url}${marvelApi.methods.characters}/${id}`,
+        data:{apikey:marvelApi.key},
+        success:response=>{
+            container.find(".preloader").remove();
+            const aux = response.data.results[0];
+            action({
+                title : aux.name,
+                description : aux.description,
+                img : `${aux.thumbnail.path}.${aux.thumbnail.extension}`
+            })
+        },
+        error:(xhr,x,y)=>{
+            container.find(".preloader").remove();
+            createError("No se pudieron cargar los detalles de este comic").appendTo(container)
+        },
+        beforeSend:()=>{
+            createPreloader("Cargando detalles del comic...").appendTo(container);
+        }
+    });
+}
