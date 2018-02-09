@@ -11800,6 +11800,7 @@ __WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).ready(()=>{
             })
         }
         localStorage.setItem("scores",JSON.stringify(scores));
+        window.location  = window.location.href.replace("details","statistics");
     });
     __WEBPACK_IMPORTED_MODULE_0_jquery___default()("form").on("click","button",e=>{
         e.preventDefault();

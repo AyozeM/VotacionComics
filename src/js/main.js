@@ -13,7 +13,10 @@ $(document).ready(()=>{
         alert($(e.currentTarget).siblings("inupt").val());
     });
 });
-
+/**
+ * almacena los datos del elementos seleccionado
+ * @param {*} tag 
+ */
 export const selectItem = tag =>{
     localStorage.setItem("selectedItem",JSON.stringify({
         id:$(tag).data("id"),

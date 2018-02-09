@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: paginator.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: paginator.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import $ from 'jquery';
+/**
+ * Pagina el contenido de un elemento
+ * @class
+ */
+export class paginator{
+    constructor(items,itemsOnPage,container){
+        this.items = items;
+        this.itemsOnPage = itemsOnPage;
+        this.pages = this.items.length / itemsOnPage;
+        this.actualPage = 0;
+        this.container = container;
+        this.index = this.createMatrix(items);
+        this.prepare();
+        this.drawPage();
+    }
+    /**
+     * Crea una representacion de la paginacion visual mediante una matriz
+     * @param {htmlCollection} elements 
+     */
+    createMatrix(elements){
+        let schema = [];
+        let start = 0;
+        let end = this.itemsOnPage;
+        for (let i = 0; i &lt; this.pages; i++) {
+            if(end > elements.length){
+                schema.push(elements.slice(start-elements.length));
+            }else{
+                schema.push(elements.slice(start,end));
+            }
+            start += this.itemsOnPage;
+            end += this.itemsOnPage;
+            
+        }
+        return schema;
+    }
+    /**
+     * Prepara el contenedor para el paginado
+     */
+    prepare(){
+        $(this.container).children().remove();
+        $(this.container).append(
+            $("&lt;content>&lt;/content>")
+        ).append(
+            $("&lt;controls>&lt;/controls>").append(
+                $(`&lt;first data-page="0">&lt;&lt;&lt;/first>`).click(e=>{
+                    this.changePage($(e.currentTarget).data("page"))
+                })
+            ).append(
+                $(`&lt;prev data-page="1">&lt;&lt;/prev>`).click(e=>{
+                    let aux = this.actualPage - parseInt($(e.currentTarget).data("page"));
+                    this.changePage(aux)
+                })
+            ).append(
+                $(`&lt;next data-page="1">>&lt;/next>`).click(e=>{
+                    let aux = this.actualPage + parseInt($(e.currentTarget).data("page"));
+                    this.changePage(aux)
+                })
+            ).append(
+                $(`&lt;last data-page="${this.index.length-1}">>>&lt;/last>`).click(e=>{
+                    this.changePage($(e.currentTarget).data("page"))
+                })
+            )
+        );
+    }
+    /**
+     * Dibuja la pagina actual
+     */
+    drawPage(){
+        for (let i = 0; i &lt; this.index[this.actualPage].length; i++) {
+            const element = this.index[this.actualPage][i];
+            $(element).appendTo("content");
+        }
+    }
+    /**
+     * Limpia el contenedor de elementos
+     */
+    clean(){
+        $(this.container).find("content").children().remove();
+    }
+    /**
+     * Cambia de pagina, comprobando que no se sale fuera de los limites
+     * @param {Int} newPage -> posible nueva pagina
+     */
+    changePage(newPage){
+        newPage = parseInt(newPage);
+        
+        if(newPage > -1 &amp;&amp; newPage &lt; this.index.length){
+            this.actualPage = newPage;
+            this.clean();
+            this.drawPage(); 
+        }
+    }
+    
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addKey">addKey</a></li><li><a href="global.html#checkEmail">checkEmail</a></li><li><a href="global.html#checkForm">checkForm</a></li><li><a href="global.html#checkNumber">checkNumber</a></li><li><a href="global.html#checkPasswd">checkPasswd</a></li><li><a href="global.html#checkRequired">checkRequired</a></li><li><a href="global.html#completeDetails">completeDetails</a></li><li><a href="global.html#createError">createError</a></li><li><a href="global.html#createHTML">createHTML</a></li><li><a href="global.html#createPaginator">createPaginator</a></li><li><a href="global.html#createPreloader">createPreloader</a></li><li><a href="global.html#createRaffleProfile">createRaffleProfile</a></li><li><a href="global.html#drawCharacters">drawCharacters</a></li><li><a href="global.html#drawComics">drawComics</a></li><li><a href="global.html#getCharacters">getCharacters</a></li><li><a href="global.html#getComics">getComics</a></li><li><a href="global.html#getSingleCharacter">getSingleCharacter</a></li><li><a href="global.html#getSingleComic">getSingleComic</a></li><li><a href="global.html#marvelApi">marvelApi</a></li><li><a href="global.html#prepareData">prepareData</a></li><li><a href="global.html#selectItem">selectItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.0-dev</a> on Fri Feb 09 2018 21:23:45 GMT+0000 (STD)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

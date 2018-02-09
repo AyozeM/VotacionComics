@@ -57,6 +57,9 @@ $(document).ready(()=>{
         }
     });
 });
+/**
+ * retorna un objeto ya formateado (se usa para almacenar los datos del concursante) 
+ */
 const createRaffleProfile = () =>{
     return {
         name:$("#name").val(),
@@ -64,6 +67,10 @@ const createRaffleProfile = () =>{
         email:$("#email").val()
     }
 }
+/**
+ * Completa los datos en la pagina
+ * @param {object} data 
+ */
 const completeDetails = data =>{
     if(data.description == "" || data.description == null){
         data.description = "Descripción no disponible";

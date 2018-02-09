@@ -4,6 +4,10 @@ import { getCharacters,getComics } from './ajaxTools';
 let book;
 let offset = 0;
 let limit = 100;
+/**
+ * Personaliza el paginador para que realize conexiones ajax al terminar la paginacion actual
+ * @param {function} method 
+ */
 export const createPaginator = method =>{    
     book = new paginator($("section").children(),10,"section");
     $("prev").off("click");
