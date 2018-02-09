@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../">Portada</a></li>
+                <li><a href="comics.html">Comics</a></li>
+                <li><a href="characters.html">Personajes</a></li>
+                <li><a href="#">Estadisticas</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section>
+        <article id="comics">
+            <div class="controls">
+                <label for="circuloComic">
+                    <span class="fas fa-chart-pie"></span>
+                    <input type="radio" name="comicControls" id="circuloComic" value="circulo" checked>
+                </label>
+                <label for="areaComic">
+                        <span class="fas fa-chart-area"></span>
+                        <input type="radio" name="comicControls" id="areaComic" value="area">
+                </label>
+                <label for="columnasComic">
+                        <span class="fas fa-chart-bar"></span>
+                        <input type="radio" name="comicControls" id="columnasComic" value="columnas">
+                </label>
+            </div>
+            <div class="data"></div>
+        </article>
+        <article id="characters">
+            <div class="controls">
+                <label for="circuloCharacter">
+                    <span class="fas fa-chart-pie"></span>
+                    <input type="radio" name="charactersControls" id="circuloCharacter" value="circulo" checked>
+                </label>
+                <label for="Character">
+                        <span class="fas fa-chart-area"></span>
+                        <input type="radio" name="charactersControls" id="Character" value="area">
+                </label>
+                <label for="columnasCharacter">
+                        <span class="fas fa-chart-bar"></span>
+                        <input type="radio" name="charactersControls" id="columnasCharacter" value="columnas">
+                </label>
+            </div>
+            <div class="data"></div>
+        </article>
+    </section>
+    <footer>
+        <span>Powered by: Ayoze</span>
+    </footer>
+    <script src="../js/statistics.bundle.js"></script>
+</body>
+</html>

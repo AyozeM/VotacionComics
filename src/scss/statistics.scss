@@ -1,0 +1,24 @@
+@import '_reset.scss';
+@import '_barmenu.scss';
+@import '_colors.scss';
+input{
+    display: none;
+}
+article{
+    margin:2%;
+}
+label{
+    font-size:2em;
+    padding: 1%;
+    background-color: $mainColor;
+    color:$secondColor;
+}
+svg>rect{
+    fill:$secondColor;
+}
+
+.optG{
+    color:$mainColor;
+    background-color: $secondColor;
+
+}

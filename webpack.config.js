@@ -17,6 +17,10 @@ module.exports = {
     details:[
       './src/js/details.js',
       './src/scss/details.scss'
+    ],
+    statistics:[
+      './src/js/statistics.js',
+      './src/scss/statistics.scss'
     ]
   }
 /*   entry: [

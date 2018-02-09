@@ -4,6 +4,7 @@ import {checkForm} from './checkForms';
 import toastr from 'toastr';
 let actual;
 let allDescription;
+let name;
 $(document).ready(()=>{
     actual = JSON.parse(localStorage.getItem("selectedItem"));
     switch(actual.type){
@@ -18,8 +19,8 @@ $(document).ready(()=>{
         let scores = JSON.parse(localStorage.getItem("scores"));
         
         if(scores != null){
-            let aux = scores[actual.type].findIndex(e=>e.id==actual.id);
-            aux == undefined ? scores[actual.type].push({id:actual.id,score:1}) : scores[actual.type][aux].score++;
+            let aux = scores[`${actual.type}s`].findIndex(e=>e.id==actual.id);
+            aux < 0 ? scores[`${actual.type}s`].push({id:actual.id,score:1,text:name}) : scores[`${actual.type}s`][aux].score++;
             
         }else{
             scores = {
@@ -28,6 +29,7 @@ $(document).ready(()=>{
             }
             scores[`${actual.type}s`].push({
                 id:actual.id,
+                text:name,
                 score:1
             })
         }
@@ -79,4 +81,5 @@ const completeDetails = data =>{
         )
     )
     allDescription = data.description;
+    name = data.title;
 }
