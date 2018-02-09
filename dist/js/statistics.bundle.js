@@ -10497,6 +10497,9 @@ __WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).ready(()=>{
     });
 
 });
+/**
+ * Dibuja el grafico de los comics
+ */
 const drawComics = () =>{
     let container = document.querySelector("#comics").children[1];
     let data = new google.visualization.DataTable();
@@ -10520,6 +10523,9 @@ const drawComics = () =>{
     
     graphic.draw(data,options);
 }
+/**
+ * Dibuja el grafico de los personajes
+ */
 const drawCharacters = () =>{
     let container = document.querySelector("#characters").children[1];
     let data = new google.visualization.DataTable();
@@ -10543,6 +10549,10 @@ const drawCharacters = () =>{
     
     graphic.draw(data,options);
 }
+/**
+ * Prepara los datos para la grafica
+ * @param {array} scores 
+ */
 const prepareData = scores =>{
     let graphicData = [];
     scores.map(e=>{

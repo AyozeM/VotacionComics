@@ -10477,6 +10477,7 @@ return data}
  * Obtiene los comics de la api y los incrusta en la pagina
  * @param {Object} queryParams -> parametros de busqueda
  * @param {jquery html elemnt} container -> contenedor de resltados
+ * @param {function} paginatorOn
  */
 const getComics = (queryParams = null,container,paginatorOn = null) =>{
     queryParams = addKey(queryParams);
@@ -10509,6 +10510,7 @@ const getComics = (queryParams = null,container,paginatorOn = null) =>{
  * Obtiene los personajes de la api y los incrusta en la pagina
  * @param {Object} queryParams -> lista de parametros para la api
  * @param {jquery html element} container -> contenedor de los resultados
+ * @param {function} paginatorOn 
  */
 const getCharacters = (queryParams = null,container,paginatorOn = null) =>{
     queryParams = addKey(queryParams);
@@ -10535,6 +10537,13 @@ const getCharacters = (queryParams = null,container,paginatorOn = null) =>{
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = getCharacters;
 
+
+/**
+ * Obtiene un solo comic (buscado por id) 
+ * @param {int} id 
+ * @param {htmlObject} container 
+ * @param {function} action 
+ */
 const getSingleComic = (id,container,action) =>{
     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.ajax({
         url:`${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].url}${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].methods.comics}/${id}`,
@@ -10559,6 +10568,12 @@ const getSingleComic = (id,container,action) =>{
 }
 /* harmony export (immutable) */ __webpack_exports__["d"] = getSingleComic;
 
+/**
+ * Obtiene un solo personaje (buscado por id)
+ * @param {int} id 
+ * @param {htmlObject} container 
+ * @param {function} action 
+ */
 const getSingleCharacter = (id,container,action) =>{
     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.ajax({
         url:`${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].url}${__WEBPACK_IMPORTED_MODULE_1__constants__["a" /* marvelApi */].methods.characters}/${id}`,
@@ -11243,6 +11258,9 @@ module.exports = function (css) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/**
+ * datos de la api 
+ */
 const marvelApi = {
     url:"https://gateway.marvel.com:443",
     key:"7f1e00c4792e7da5579f0b087a4c7d7f",
@@ -11278,7 +11296,10 @@ __WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).ready(()=>{
         alert(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget).siblings("inupt").val());
     });
 });
-
+/**
+ * almacena los datos del elementos seleccionado
+ * @param {*} tag 
+ */
 const selectItem = tag =>{
     localStorage.setItem("selectedItem",JSON.stringify({
         id:__WEBPACK_IMPORTED_MODULE_0_jquery___default()(tag).data("id"),
