@@ -34,6 +34,7 @@ $(document).ready(()=>{
             })
         }
         localStorage.setItem("scores",JSON.stringify(scores));
+        window.location  = window.location.href.replace("details","statistics");
     });
     $("form").on("click","button",e=>{
         e.preventDefault();
