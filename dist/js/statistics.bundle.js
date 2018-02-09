@@ -10454,6 +10454,103 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 
+let dataComics,dataCharacters;
+let chartDataComic,chartDataCharacter;
+let tipoGraficaComic,tipoGraficaCharacter;
+__WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).ready(()=>{
+    let scores = JSON.parse(localStorage.getItem("scores"));
+
+    tipoGraficaComic = __WEBPACK_IMPORTED_MODULE_0_jquery___default()("#comics").find(".controls").find("input[checked]").val();
+    tipoGraficaCharacter = __WEBPACK_IMPORTED_MODULE_0_jquery___default()("#characters").find(".controls").find("input[checked]").val();
+
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("#comics").find(".controls").find("input[checked]").closest("label").addClass("optG");
+    
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("#characters").find(".controls").find("input[checked]").closest("label").addClass("optG");
+    
+
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawComics);
+    chartDataComic = prepareData(scores.comics);
+
+    google.charts.setOnLoadCallback(drawCharacters);
+    chartDataCharacter = prepareData(scores.characters);
+
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(window).resize(()=>{
+        drawComics();
+        drawCharacters();
+    })
+
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("#comics").on("change","input",e=>{
+        const tag = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget);
+        tipoGraficaComic = tag.val();
+        __WEBPACK_IMPORTED_MODULE_0_jquery___default()("#comics").find("label").removeClass();
+        tag.closest("label").addClass("optG");
+        drawComics();
+
+    });
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()("#characters").on("change","input",e=>{
+        const tag = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget);
+        tipoGraficaCharacter = tag.val();
+        __WEBPACK_IMPORTED_MODULE_0_jquery___default()("#characters").find("label").removeClass();
+        tag.closest("label").addClass("optG");
+        drawCharacters();
+    });
+
+});
+const drawComics = () =>{
+    let container = document.querySelector("#comics").children[1];
+    let data = new google.visualization.DataTable();
+    data.addColumn('string','comic');
+    data.addColumn('number','votos');
+    data.addRows(chartDataComic);
+
+    let options = {'title':'Porcentaje de votos por comics','width':window.innerWidth,'height':75*window.innerHeight/100,is3D:true};
+    let graphic;
+    switch (tipoGraficaComic) {
+        case 'circulo':
+            graphic = new google.visualization.PieChart(container);
+            break;
+        case 'area':
+            graphic = new google.visualization.AreaChart(container);
+            break;
+        case 'columnas':
+            graphic = new google.visualization.ColumnChart(container);
+            break;
+    }
+    
+    graphic.draw(data,options);
+}
+const drawCharacters = () =>{
+    let container = document.querySelector("#characters").children[1];
+    let data = new google.visualization.DataTable();
+    data.addColumn('string','personaje');
+    data.addColumn('number','votos');
+    data.addRows(chartDataCharacter);
+
+    let options = {'title':'Porcentaje de votos por personajes','width':window.innerWidth,'height':75*window.innerHeight/100,is3D:true};
+    let graphic;
+    switch (tipoGraficaCharacter) {
+        case 'circulo':
+            graphic = new google.visualization.PieChart(container);
+            break;
+        case 'area':
+            graphic = new google.visualization.AreaChart(container);
+            break;
+        case 'columnas':
+            graphic = new google.visualization.ColumnChart(container);
+            break;
+    }
+    
+    graphic.draw(data,options);
+}
+const prepareData = scores =>{
+    let graphicData = [];
+    scores.map(e=>{
+        graphicData.push([e.text,e.score]);
+    });
+    return graphicData;
+}
+
 
 /***/ }),
 
@@ -10580,7 +10677,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  font-family: 'Indie Flower', cursive; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nheader, footer {\n  height: 10vh;\n  background-color: #242121;\n  color: whitesmoke; }\n\nnav {\n  display: flex; }\n  nav ul {\n    flex-grow: 1;\n    display: flex; }\n    nav ul li {\n      flex-grow: 1;\n      padding: 1%;\n      list-style: none; }\n      nav ul li:hover a {\n        opacity: 1;\n        color: white; }\n      nav ul li a {\n        transition: .2s;\n        font-size: 1.7em;\n        display: inline-block;\n        width: 100%;\n        color: lightgray;\n        text-decoration: none;\n        opacity: .6; }\n  nav p {\n    flex-basis: 25%; }\n    nav p input {\n      background-color: transparent;\n      border: thin solid lightgray;\n      font-size: 1.1em;\n      color: lightgray;\n      padding: 1%; }\n    nav p button {\n      font-size: 1.1em;\n      padding: 1%;\n      background-color: transparent;\n      color: lightgray;\n      border: thin solid lightgray;\n      cursor: pointer; }\n      nav p button:hover {\n        background-color: lightgray;\n        color: #242121; }\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n  font-family: 'Indie Flower', cursive; }\n\nhtml, body {\n  width: 100%;\n  height: 100%; }\n\nheader, footer {\n  height: 10vh;\n  background-color: #242121;\n  color: whitesmoke; }\n\nnav {\n  display: flex; }\n  nav ul {\n    flex-grow: 1;\n    display: flex; }\n    nav ul li {\n      flex-grow: 1;\n      padding: 1%;\n      list-style: none; }\n      nav ul li:hover a {\n        opacity: 1;\n        color: white; }\n      nav ul li a {\n        transition: .2s;\n        font-size: 1.7em;\n        display: inline-block;\n        width: 100%;\n        color: lightgray;\n        text-decoration: none;\n        opacity: .6; }\n  nav p {\n    flex-basis: 25%; }\n    nav p input {\n      background-color: transparent;\n      border: thin solid lightgray;\n      font-size: 1.1em;\n      color: lightgray;\n      padding: 1%; }\n    nav p button {\n      font-size: 1.1em;\n      padding: 1%;\n      background-color: transparent;\n      color: lightgray;\n      border: thin solid lightgray;\n      cursor: pointer; }\n      nav p button:hover {\n        background-color: lightgray;\n        color: #242121; }\n\ninput {\n  display: none; }\n\narticle {\n  margin: 2%; }\n\nlabel {\n  font-size: 2em;\n  padding: 1%;\n  background-color: #242121;\n  color: lightgray; }\n\nsvg > rect {\n  fill: lightgray; }\n\n.optG {\n  color: #242121;\n  background-color: lightgray; }\n", ""]);
 
 // exports
 
